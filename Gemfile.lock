@@ -1,0 +1,43 @@
+PATH
+  remote: .
+  specs:
+    yabeda-graphql (0.1.0)
+      graphql (~> 1.9)
+      yabeda (~> 0.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    concurrent-ruby (1.1.6)
+    diff-lcs (1.3)
+    dry-initializer (3.0.3)
+    graphql (1.10.5)
+    rake (10.5.0)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.1)
+      rspec-support (~> 3.9.1)
+    rspec-expectations (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-support (3.9.2)
+    yabeda (0.5.0)
+      concurrent-ruby
+      dry-initializer
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler
+  rake (~> 10.0)
+  rspec (~> 3.0)
+  yabeda-graphql!
+
+BUNDLED WITH
+   2.1.4
