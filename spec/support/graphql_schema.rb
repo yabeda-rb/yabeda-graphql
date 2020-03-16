@@ -52,7 +52,7 @@ end
 class YabedaSchema < GraphQL::Schema
   use Yabeda::GraphQL::Tracing, trace_scalars: true
 
-  if ENV["GRAPHQL_RUBY_INTERPRETER"]
+  if TESTING_GRAPHQL_RUBY_INTERPRETER
     use GraphQL::Execution::Interpreter
     use GraphQL::Analysis::AST
   end

@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     yabeda-graphql (0.1.0)
       graphql (~> 1.9)
@@ -54,6 +54,7 @@ PLATFORMS
 DEPENDENCIES
   appraisal
   bundler
+  graphql (~> 1.10.0)
   pry
   pry-byebug
   pry-inline

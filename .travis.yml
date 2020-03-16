@@ -3,4 +3,10 @@ language: ruby
 cache: bundler
 rvm:
   - 2.7.0
+gemfile:
+  - gemfiles/graphql_1.10.gemfile
+  - gemfiles/graphql_1.9.gemfile
+env:
+  - GRAPHQL_RUBY_INTERPRETER=yes
+  - GRAPHQL_RUBY_INTERPRETER=no
 before_install: gem install bundler -v 2.1.4
