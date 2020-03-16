@@ -2,7 +2,7 @@ require_relative 'lib/yabeda/graphql/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "yabeda-graphql"
-  spec.version       = Yabeda::Graphql::VERSION
+  spec.version       = Yabeda::GraphQL::VERSION
   spec.authors       = ["Andrey Novikov"]
   spec.email         = ["envek@envek.name"]
 

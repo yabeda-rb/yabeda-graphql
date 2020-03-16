@@ -1,5 +1,8 @@
 require "bundler/setup"
 require "yabeda/graphql"
+require "pry"
+
+require_relative "support/graphql_schema"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -10,5 +13,14 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.mock_with :rspec
+
+  Kernel.srand config.seed
+  config.order = :random
+
+  config.before(:all) do
+    Yabeda.configure!
   end
 end
