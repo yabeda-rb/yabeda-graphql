@@ -1,40 +1,73 @@
-# Yabeda::Graphql
+# Yabeda::[GraphQL][GraphQL-Ruby]
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/yabeda/graphql`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Build Status](https://travis-ci.org/yabeda-rb/yabeda-graphql.svg?branch=master)](https://travis-ci.org/yabeda-rb/yabeda-graphql)
 
-TODO: Delete this and the text above, and describe your gem
+Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabeda] suite.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+ 1. Add the gem to your Gemfile:
 
-```ruby
-gem 'yabeda-graphql'
-```
+    ```ruby
+    gem 'yabeda-graphql'
 
-And then execute:
+    # Then add monitoring system adapter, e.g.:
+    # gem 'yabeda-prometheus'
 
-    $ bundle install
+    # If you're using Railsm don't forget to add plugin for it:
+    # gem 'yabeda-rails'
+    # But if not then you should run `Yabeda.configure!` manually when your app is ready.
+    ```
 
-Or install it yourself as:
+    And then execute:
 
-    $ gem install yabeda-graphql
+    ```sh
+    bundle install
+    ```
 
-## Usage
+ 2. Hook it to your schema:
 
-TODO: Write usage instructions here
+    ```ruby
+    class YourAppSchema < GraphQL::Schema
+      use Yabeda::GraphQL::Tracing, trace_scalars: true
+    end
+    ```
+
+ 3. And deploy it!
+
+**And that is it!** GraphQL metrics are being collected!
+
+## Metrics
+
+ - **Fields resolved count**: `graphql_fields_request_count` (segmented by `type` name, `field` name and `deprecated` flag)
+ - **Field resolve runtime**: `graphql_field_resolve_runtime` (segmented by `type` name, `field` name and `deprecated` flag)
+ - **Queries executed count** (root query fields): `query_fields_count` (segmented by query `name` and `deprecated` flag)
+ - **Mutations executed** (root mutation fields): `mutation_fields_count` (segmented by query `name` and `deprecated` flag)
+
+That is it for now, but more will come later.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies.
+
+Then, run fololowing commands to run the tests against all supported versions of [GraphQL-Ruby]:
+
+```sh
+GRAPHQL_RUBY_INTERPRETER=yes bundle exec appraisal rspec
+GRAPHQL_RUBY_INTERPRETER=no  bundle exec appraisal rspec
+```
+
+You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/yabeda-graphql.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/yabeda-rb/yabeda-graphql.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+[yabeda]: https://github.com/yabeda-rb/yabeda "Extendable framework for collecting and exporting metrics from your Ruby application"
+[GraphQL-Ruby]: https://graphql-ruby.org/ "Ruby implementation of GraphQL"
