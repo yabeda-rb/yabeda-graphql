@@ -1,33 +1,66 @@
 # frozen_string_literal: true
 require "graphql"
+require "graphql/batch"
 
-class Price < GraphQL::Schema::Object
+class PriceLoader < GraphQL::Batch::Loader
+  def perform(ids)
+    ids.each { |id| fulfill(id, { currency: "USD", amount: 1.0 }) }
+  end
+end
+
+class PriceType < GraphQL::Schema::Object
   field :currency, String, null: false, hash_key: :currency
   field :amount,   Float,  null: false, hash_key: :amount
 end
 
-class Product < GraphQL::Schema::Object
-  field :id, ID, null: false, hash_key: :id
-  field :title, String, null: true, hash_key: :title
-  field :shmitle, String, null: true, hash_key: :title, deprecation_reason: "Just shit"
-  field :price, Price,  null: true, hash_key: :price
+class ProductType < GraphQL::Schema::Object
+  field :id, ID, null: false
+  field :title, String, null: true
+  field :shmitle, String, null: true, method: :title, deprecation_reason: "Just shit"
+  field :price, PriceType,  null: true
+
+  def price
+    PriceLoader.load(object.id)
+  end
+end
+
+class UserType < GraphQL::Schema::Object
+  field :id, ID, null: false
+  field :name, String, null: true
+end
+
+class Product < OpenStruct
+  def title
+    super
+  end
+end
+
+class User < OpenStruct
+  def name
+    super
+  end
 end
 
 class QueryType < GraphQL::Schema::Object
-  field :products, [Product], null: false
+  field :products, [ProductType], null: false
+  field :users, [UserType], null: false
 
   def products
     [
-      { id: 1, title: "Foo", price: { currency: "USD", amount: 1.0 } },
-      { id: 2, title: "Foo", price: { currency: "RUB", amount: 75.0 } },
+      Product.new(id: 1, title: "Foo", price: { currency: "USD", amount: 1.0 }),
+      Product.new(id: 2, title: "Foo", price: { currency: "RUB", amount: 75.0 }),
     ]
+  end
+
+  def users
+    [User.new(id: 1, name: "Andrey")]
   end
 end
 
 class CreateProduct < GraphQL::Schema::RelayClassicMutation
   argument :title, String, required: true
 
-  field :product, Product, null: true
+  field :product, ProductType, null: true
   field :errors, [String], null: false
 
   def resolve(title:)
@@ -41,8 +74,8 @@ class MutationType < GraphQL::Schema::Object
 end
 
 class SubscriptionType < GraphQL::Schema::Object
-  field :product_created, Product, null: false
-  field :product_updated, Product, null: false
+  field :product_created, ProductType, null: false
+  field :product_updated, ProductType, null: false
 
   # See https://github.com/rmosolgo/graphql-ruby/issues/1567
   def product_created; end
@@ -60,4 +93,6 @@ class YabedaSchema < GraphQL::Schema
   query QueryType
   mutation MutationType
   subscription SubscriptionType
+
+  use GraphQL::Batch
 end

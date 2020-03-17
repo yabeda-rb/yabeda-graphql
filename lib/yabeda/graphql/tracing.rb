@@ -24,17 +24,19 @@ module Yabeda
 
         case key
         when "execute_field", "execute_field_lazy"
-          _field, path, query = extract_trace_data(data)
+          field, path, query = extract_field_trace_data(data)
+
+          tags = extract_field_tags(field)
           if path.length == 1
             if query.query?
-              instrument_query_execution(platform_key, duration)
+              instrument_query_execution(tags)
             elsif query.mutation?
-              instrument_mutation_execution(platform_key, duration)
+              instrument_mutation_execution(tags)
             elsif query.subscription?
               # Not implemented yet
             end
           else
-            instrument_field_execution(platform_key, duration)
+            instrument_field_execution(tags, duration)
           end
         end
 
@@ -42,7 +44,7 @@ module Yabeda
       end
 
       # See https://graphql-ruby.org/api-doc/1.10.5/GraphQL/Tracing
-      def extract_trace_data(data)
+      def extract_field_trace_data(data)
         if data[:context] # Legacy non-interpreter mode
           [data[:context].field, data[:context].path, data[:context].query]
         else # Interpreter mode
@@ -50,29 +52,32 @@ module Yabeda
         end
       end
 
+      def extract_field_tags(field)
+        owner = field.respond_to?(:owner) ? field.owner : field.metadata[:type_class].owner
+        {
+          type: owner.graphql_name,
+          field: field.graphql_name,
+          deprecated: !field.deprecation_reason.nil?,
+        }
+      end
+
       def instrument_field_execution(tags, duration)
         Yabeda.graphql.field_resolve_runtime.measure(tags, duration)
         Yabeda.graphql.fields_request_count.increment(tags)
       end
 
-      def instrument_mutation_execution(tags, duration)
+      def instrument_mutation_execution(tags)
         tags = { name: tags[:field], deprecated: tags[:deprecated] }
-        Yabeda.graphql.mutation_resolve_runtime.measure(tags, duration)
-        Yabeda.graphql.mutation_count.increment(tags)
+        Yabeda.graphql.mutation_fields_count.increment(tags)
       end
 
-      def instrument_query_execution(tags, duration)
+      def instrument_query_execution(tags)
         tags = { name: tags[:field], deprecated: tags[:deprecated] }
-        Yabeda.graphql.query_resolve_runtime.measure(tags, duration)
-        Yabeda.graphql.query_count.increment(tags)
+        Yabeda.graphql.query_fields_count.increment(tags)
       end
 
       def platform_field_key(type, field)
-        {
-          type: type.graphql_name,
-          field: field.graphql_name,
-          deprecated: !field.deprecation_reason.nil?,
-        }
+        "#{type.graphql_name}.#{field.graphql_name}"
       end
 
       # We don't use these yet, but graphql-ruby require us to declare them

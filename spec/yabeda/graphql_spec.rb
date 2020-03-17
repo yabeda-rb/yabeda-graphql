@@ -16,7 +16,10 @@ RSpec.describe Yabeda::GraphQL do
       <<~GRAPHQL
         query {
           products {
-            id title shmitle price { amount currency } 
+            id title shmitle price { amount currency }
+          }
+          users {
+            id name
           }
         }
       GRAPHQL
@@ -32,6 +35,8 @@ RSpec.describe Yabeda::GraphQL do
         { type: "Product", field: "price",    deprecated: false } => kind_of(Numeric),
         { type: "Price",   field: "amount",   deprecated: false } => kind_of(Numeric),
         { type: "Price",   field: "currency", deprecated: false } => kind_of(Numeric),
+        { type: "User",    field: "id",       deprecated: false } => kind_of(Numeric),
+        { type: "User",    field: "name",     deprecated: false } => kind_of(Numeric),
       )
     end
 
@@ -46,14 +51,17 @@ RSpec.describe Yabeda::GraphQL do
         { type: "Product", field: "price",    deprecated: false } => 2,
         { type: "Price",   field: "amount",   deprecated: false } => 2,
         { type: "Price",   field: "currency", deprecated: false } => 2,
+        { type: "User",    field: "id",       deprecated: false } => 1,
+        { type: "User",    field: "name",     deprecated: false } => 1,
       )
     end
 
-    it "measures query execution time" do
-      Yabeda.graphql.query_resolve_runtime.values.clear # This is a hack
+    it "counts query executions" do
+      Yabeda.graphql.query_fields_count.values.clear # This is a hack
       subject
-      expect(Yabeda.graphql.query_resolve_runtime.values).to match(
-        { name: "products", deprecated: false } => kind_of(Numeric),
+      expect(Yabeda.graphql.query_fields_count.values).to match(
+        { name: "products", deprecated: false } => 1,
+        { name: "users", deprecated: false } => 1,
       )
     end
   end
@@ -69,21 +77,21 @@ RSpec.describe Yabeda::GraphQL do
       GRAPHQL
     end
 
-    it "measures field executions" do
+    it "measures response field executions" do
       Yabeda.graphql.field_resolve_runtime.values.clear # This is a hack
       subject
       expect(Yabeda.graphql.field_resolve_runtime.values).to match(
-        { type: "Product", field: "id",       deprecated: false } => kind_of(Numeric),
-        { type: "Product", field: "title",    deprecated: false } => kind_of(Numeric),
-        { type: "CreateProductPayload", field: "product", deprecated: false } => kind_of(Numeric),
+        { type: "Product",       field: "id",      deprecated: false } => kind_of(Numeric),
+        { type: "Product",       field: "title",   deprecated: false } => kind_of(Numeric),
+        { type: "CreateProduct", field: "product", deprecated: false } => kind_of(Numeric),
       )
     end
 
-    it "measures mutation execution time" do
-      Yabeda.graphql.mutation_resolve_runtime.values.clear # This is a hack
+    it "counts mutation executions" do
+      Yabeda.graphql.mutation_fields_count.values.clear # This is a hack
       subject
-      expect(Yabeda.graphql.mutation_resolve_runtime.values).to match(
-        { name: "createProduct", deprecated: false } => kind_of(Numeric),
+      expect(Yabeda.graphql.mutation_fields_count.values).to match(
+        { name: "createProduct", deprecated: false } => 1,
       )
     end
   end

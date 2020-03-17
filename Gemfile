@@ -7,4 +7,5 @@ group :development, :test do
   gem "pry"
   gem "pry-inline"
   gem "pry-byebug", platform: :mri
+  gem "graphql-batch"
 end

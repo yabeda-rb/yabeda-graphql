@@ -21,20 +21,10 @@ module Yabeda
       counter :fields_request_count, comment: "A counter for specific fields requests",
               tags: %i[type field deprecated]
 
-      histogram :query_resolve_runtime, comment: "A histogram of query root field resolving time (not whole queries)",
-                unit: :seconds, per: :field,
-                tags: %i[name deprecated],
-                buckets: REQUEST_BUCKETS
-
-      counter :query_count, comment: "A counter for query root fields",
+      counter :query_fields_count, comment: "A counter for query root fields",
               tags: %i[name deprecated]
 
-      histogram :mutation_resolve_runtime, comment: "A histogram of mutation root field resolving time",
-                unit: :seconds, per: :field,
-                tags: %i[name deprecated],
-                buckets: REQUEST_BUCKETS
-
-      counter :mutation_count, comment: "A counter for mutation root fields",
+      counter :mutation_fields_count, comment: "A counter for mutation root fields",
               tags: %i[name deprecated]
     end
   end
