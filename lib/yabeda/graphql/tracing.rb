@@ -26,6 +26,8 @@ module Yabeda
         when "execute_field", "execute_field_lazy"
           field, path, query = extract_field_trace_data(data)
 
+          return result if key == "execute_field" && query.schema.lazy?(result)
+
           tags = extract_field_tags(field)
           if path.length == 1
             if query.query?
