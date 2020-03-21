@@ -26,13 +26,13 @@ RSpec.describe Yabeda::GraphQL do
     end
 
     it "measures field executions" do
-      Yabeda.graphql.field_resolve_runtime.values.clear # This is a hack
+      Yabeda.graphql.field_resolve_runtime.sums.clear # This is a hack
       subject
-      expect(Yabeda.graphql.field_resolve_runtime.values).to match(
+      expect(Yabeda.graphql.field_resolve_runtime.sums).to match(
         { type: "Product", field: "id",       deprecated: false } => kind_of(Numeric),
-        { type: "Product", field: "title",    deprecated: false } => kind_of(Numeric),
+        { type: "Product", field: "title",    deprecated: false } => be > 0.002,
         { type: "Product", field: "shmitle",  deprecated: true  } => kind_of(Numeric),
-        { type: "Product", field: "price",    deprecated: false } => kind_of(Numeric),
+        { type: "Product", field: "price",    deprecated: false } => be > 0.01,
         { type: "Price",   field: "amount",   deprecated: false } => kind_of(Numeric),
         { type: "Price",   field: "currency", deprecated: false } => kind_of(Numeric),
         { type: "User",    field: "id",       deprecated: false } => kind_of(Numeric),
@@ -78,9 +78,9 @@ RSpec.describe Yabeda::GraphQL do
     end
 
     it "measures response field executions" do
-      Yabeda.graphql.field_resolve_runtime.values.clear # This is a hack
+      Yabeda.graphql.field_resolve_runtime.sums.clear # This is a hack
       subject
-      expect(Yabeda.graphql.field_resolve_runtime.values).to match(
+      expect(Yabeda.graphql.field_resolve_runtime.sums).to match(
         { type: "Product",       field: "id",      deprecated: false } => kind_of(Numeric),
         { type: "Product",       field: "title",   deprecated: false } => kind_of(Numeric),
         { type: "CreateProduct", field: "product", deprecated: false } => kind_of(Numeric),

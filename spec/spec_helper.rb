@@ -31,3 +31,18 @@ RSpec.configure do |config|
     Yabeda.configure!
   end
 end
+
+# Add sum of all observed values to histograms to check in tests
+module SummingHistogram
+  def measure(tags, value)
+    all_tags = ::Yabeda::Tags.build(tags)
+    sums[all_tags] += value
+    super
+  end
+
+  def sums
+    @sums ||= Concurrent::Hash.new { |h, k| h[k] = 0.0 }
+  end
+end
+
+Yabeda::Histogram.prepend(SummingHistogram)

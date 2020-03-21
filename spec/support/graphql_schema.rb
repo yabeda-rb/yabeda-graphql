@@ -4,6 +4,7 @@ require "graphql/batch"
 
 class PriceLoader < GraphQL::Batch::Loader
   def perform(ids)
+    sleep 0.01
     ids.each { |id| fulfill(id, { currency: "USD", amount: 1.0 }) }
   end
 end
@@ -31,6 +32,7 @@ end
 
 class Product < OpenStruct
   def title
+    sleep 0.001
     super
   end
 end
@@ -83,7 +85,7 @@ class SubscriptionType < GraphQL::Schema::Object
 end
 
 class YabedaSchema < GraphQL::Schema
-  use Yabeda::GraphQL::Tracing, trace_scalars: true
+  use Yabeda::GraphQL
 
   if TESTING_GRAPHQL_RUBY_INTERPRETER
     use GraphQL::Execution::Interpreter

@@ -29,7 +29,7 @@ Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabe
 
     ```ruby
     class YourAppSchema < GraphQL::Schema
-      use Yabeda::GraphQL::Tracing, trace_scalars: true
+      use Yabeda::GraphQL
     end
     ```
 

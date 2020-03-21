@@ -1,13 +1,14 @@
 require "yabeda"
 require "yabeda/graphql/version"
 require "yabeda/graphql/tracing"
+require "yabeda/graphql/instrumentation"
 
 module Yabeda
   module GraphQL
     class Error < StandardError; end
 
     REQUEST_BUCKETS = [
-      0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10,
+      0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10,
     ].freeze
 
     Yabeda.configure do
@@ -26,6 +27,11 @@ module Yabeda
 
       counter :mutation_fields_count, comment: "A counter for mutation root fields",
               tags: %i[name deprecated]
+    end
+
+    def self.use(schema)
+      schema.instrument(:query, Instrumentation.new)
+      schema.use Tracing, trace_scalars: true
     end
   end
 end

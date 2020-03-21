@@ -26,10 +26,10 @@ module Yabeda
         when "execute_field", "execute_field_lazy"
           field, path, query = extract_field_trace_data(data)
 
-          return result if key == "execute_field" && query.schema.lazy?(result)
-
           tags = extract_field_tags(field)
           if path.length == 1
+            return result if key == "execute_field" && query.schema.lazy?(result)
+
             if query.query?
               instrument_query_execution(tags)
             elsif query.mutation?
@@ -38,7 +38,7 @@ module Yabeda
               # Not implemented yet
             end
           else
-            instrument_field_execution(tags, duration)
+            instrument_field_execution(query, path, tags, duration)
           end
         end
 
@@ -63,9 +63,9 @@ module Yabeda
         }
       end
 
-      def instrument_field_execution(tags, duration)
-        Yabeda.graphql.field_resolve_runtime.measure(tags, duration)
-        Yabeda.graphql.fields_request_count.increment(tags)
+      def instrument_field_execution(query, path, tags, duration)
+        cache(query)[path][:tags] = tags
+        cache(query)[path][:duration] += duration
       end
 
       def instrument_mutation_execution(tags)
@@ -76,6 +76,10 @@ module Yabeda
       def instrument_query_execution(tags)
         tags = { name: tags[:field], deprecated: tags[:deprecated] }
         Yabeda.graphql.query_fields_count.increment(tags)
+      end
+
+      def cache(query)
+        query.context.namespace(Yabeda::GraphQL)[:field_call_cache]
       end
 
       def platform_field_key(type, field)

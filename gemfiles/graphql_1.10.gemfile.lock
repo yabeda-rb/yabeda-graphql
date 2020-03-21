@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    yabeda-graphql (0.1.0)
+    yabeda-graphql (0.2.0)
       graphql (~> 1.9)
       yabeda (~> 0.2)
 
