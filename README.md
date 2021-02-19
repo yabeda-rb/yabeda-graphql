@@ -14,7 +14,7 @@ Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabe
     # Then add monitoring system adapter, e.g.:
     # gem 'yabeda-prometheus'
 
-    # If you're using Railsm don't forget to add plugin for it:
+    # If you're using Rails don't forget to add plugin for it:
     # gem 'yabeda-rails'
     # But if not then you should run `Yabeda.configure!` manually when your app is ready.
     ```
