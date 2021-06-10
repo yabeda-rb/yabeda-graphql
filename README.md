@@ -1,4 +1,4 @@
-# Yabeda::[GraphQL][GraphQL-Ruby]
+# ![Yabeda::GraphQL](./yabeda-graphql-logo.png)
 
 [![Build Status](https://travis-ci.org/yabeda-rb/yabeda-graphql.svg?branch=master)](https://travis-ci.org/yabeda-rb/yabeda-graphql)
 
