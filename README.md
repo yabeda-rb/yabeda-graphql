@@ -4,6 +4,8 @@
 
 Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabeda] suite.
 
+Get sample Grafana dashboard from [Grafana.com #14774](https://grafana.com/grafana/dashboards/14774) or from [`grafana-dashboard.json`](./grafana-dashboard.json) file.
+
 ## Installation
 
  1. Add the gem to your Gemfile:
