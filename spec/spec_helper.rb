@@ -1,13 +1,6 @@
 require "bundler/setup"
 require "yabeda/graphql"
 require "pry"
-require "yaml"
-
-TESTING_GRAPHQL_RUBY_INTERPRETER =
-  begin
-    env_value = ENV["GRAPHQL_RUBY_INTERPRETER"]
-    env_value ? YAML.safe_load(env_value) : false
-  end
 
 require_relative "support/graphql_schema"
 

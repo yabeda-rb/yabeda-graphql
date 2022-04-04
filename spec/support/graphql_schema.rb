@@ -87,11 +87,6 @@ end
 class YabedaSchema < GraphQL::Schema
   use Yabeda::GraphQL
 
-  if TESTING_GRAPHQL_RUBY_INTERPRETER
-    use GraphQL::Execution::Interpreter
-    use GraphQL::Analysis::AST
-  end
-
   query QueryType
   mutation MutationType
   subscription SubscriptionType

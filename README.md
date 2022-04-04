@@ -1,6 +1,6 @@
 # ![Yabeda::GraphQL](./yabeda-graphql-logo.png)
 
-[![Build Status](https://travis-ci.org/yabeda-rb/yabeda-graphql.svg?branch=master)](https://travis-ci.org/yabeda-rb/yabeda-graphql)
+[![Tests](https://github.com/yabeda-rb/yabeda-graphql/actions/workflows/test.yml/badge.svg)](https://github.com/yabeda-rb/yabeda-graphql/actions/workflows/test.yml)
 
 Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabeda] suite.
 
@@ -55,8 +55,7 @@ After checking out the repo, run `bin/setup` to install dependencies.
 Then, run fololowing commands to run the tests against all supported versions of [GraphQL-Ruby]:
 
 ```sh
-GRAPHQL_RUBY_INTERPRETER=yes bundle exec appraisal rspec
-GRAPHQL_RUBY_INTERPRETER=no  bundle exec appraisal rspec
+bundle exec appraisal rspec
 ```
 
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
