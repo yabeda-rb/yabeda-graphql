@@ -1,5 +1,6 @@
 # ![Yabeda::GraphQL](./yabeda-graphql-logo.png)
 
+[![Gem Version](https://badge.fury.io/rb/yabeda-graphql.svg)](https://badge.fury.io/rb/yabeda-graphql)
 [![Tests](https://github.com/yabeda-rb/yabeda-graphql/actions/workflows/test.yml/badge.svg)](https://github.com/yabeda-rb/yabeda-graphql/actions/workflows/test.yml)
 
 Built-in metrics for [GraphQL-Ruby] monitoring out of the box! Part of the [yabeda] suite.
