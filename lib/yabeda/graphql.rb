@@ -31,7 +31,7 @@ module Yabeda
 
     def self.use(schema)
       schema.instrument(:query, Instrumentation.new)
-      schema.use Tracing, trace_scalars: true
+      schema.use Tracing, trace_scalars: true, legacy_tracing: true
     end
   end
 end
