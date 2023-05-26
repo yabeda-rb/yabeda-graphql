@@ -2,7 +2,7 @@ require "graphql/tracing/platform_tracing"
 
 module Yabeda
   module GraphQL
-    class Tracing < ::GraphQL::Tracing::PlatformTracing
+    class YabedaTracing < ::GraphQL::Tracing::PlatformTracing
 
       self.platform_keys = {
           'lex' => "graphql.lex",
