@@ -1,6 +1,6 @@
 require "yabeda"
 require "yabeda/graphql/version"
-require "yabeda/graphql/tracing"
+require "yabeda/graphql/yabeda_tracing"
 require "yabeda/graphql/instrumentation"
 
 module Yabeda
@@ -31,7 +31,7 @@ module Yabeda
 
     def self.use(schema)
       schema.instrument(:query, Instrumentation.new)
-      schema.use Tracing, trace_scalars: true
+      schema.use YabedaTracing, trace_scalars: true
     end
   end
 end
