@@ -16,6 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - ruby: "3.2"
+            graphql-ruby: "2.0"
           - ruby: "3.1"
             graphql-ruby: "2.0"
           - ruby: "3.0"
@@ -24,10 +26,6 @@ jobs:
             graphql-ruby: "1.12"
           - ruby: "2.6"
             graphql-ruby: "1.11"
-          - ruby: "2.5"
-            graphql-ruby: "1.10"
-          - ruby: "2.5"
-            graphql-ruby: "1.9"
     container:
       image: ruby:${{ matrix.ruby }}
       env:
