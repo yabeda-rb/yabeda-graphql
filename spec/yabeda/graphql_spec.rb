@@ -14,7 +14,7 @@ RSpec.describe Yabeda::GraphQL do
   describe "queries" do
     let(:query) do
       <<~GRAPHQL
-        query {
+        query getProductsAndUsers {
           products {
             id title shmitle price { amount currency }
           }
@@ -37,6 +37,15 @@ RSpec.describe Yabeda::GraphQL do
         { type: "Price",   field: "currency", deprecated: false } => kind_of(Numeric),
         { type: "User",    field: "id",       deprecated: false } => kind_of(Numeric),
         { type: "User",    field: "name",     deprecated: false } => kind_of(Numeric),
+      )
+    end
+
+    it "measures operation executions" do
+      Yabeda.graphql.operation_resolve_runtime.sums.clear # This is a hack
+      subject
+      expect(Yabeda.graphql.operation_resolve_runtime.sums).to match(
+        { operation: "getProductsAndUsers", deprecated: false } => kind_of(Numeric),
+        { operation: "getProductsAndUsers", deprecated: true } => kind_of(Numeric),
       )
     end
 

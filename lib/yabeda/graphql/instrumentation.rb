@@ -8,6 +8,10 @@ module Yabeda
       def after_query(query)
         cache(query).each do |_path, options|
           Yabeda.graphql.field_resolve_runtime.measure(options[:tags], options[:duration])
+          Yabeda.graphql.operation_resolve_runtime.measure({
+            operation: query.operation_name,
+            deprecated: options[:tags][:deprecated]
+          }, options[:duration])
           Yabeda.graphql.fields_request_count.increment(options[:tags])
         end
       end

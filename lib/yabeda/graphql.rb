@@ -19,6 +19,11 @@ module Yabeda
                 tags: %i[type field deprecated],
                 buckets: REQUEST_BUCKETS
 
+      histogram :operation_resolve_runtime, comment: "A histogram of operation resolving time",
+                unit: :seconds, per: :operation,
+                tags: %i[operation deprecated],
+                buckets: REQUEST_BUCKETS
+
       counter :fields_request_count, comment: "A counter for specific fields requests",
               tags: %i[type field deprecated]
 
