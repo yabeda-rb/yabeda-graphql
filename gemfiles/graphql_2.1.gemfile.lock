@@ -19,7 +19,8 @@ GEM
     concurrent-ruby (1.2.3)
     diff-lcs (1.5.1)
     dry-initializer (3.1.1)
-    graphql (1.13.21)
+    graphql (2.1.11)
+      racc (~> 1.4)
     graphql-batch (0.5.4)
       graphql (>= 1.12.18, < 3)
       promise.rb (~> 0.7.2)
@@ -34,6 +35,7 @@ GEM
     pry-inline (1.0.7)
       pry (> 0.10.0)
       unicode (~> 0.4.4)
+    racc (1.7.3)
     rake (13.1.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -57,12 +59,13 @@ GEM
       dry-initializer
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
   appraisal
   bundler
-  graphql (~> 1.13.0)
+  graphql (~> 2.1.0)
   graphql-batch
   pry
   pry-byebug

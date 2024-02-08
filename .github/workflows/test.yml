@@ -16,8 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - ruby: "3.3"
+            graphql-ruby: "2.2"
           - ruby: "3.2"
-            graphql-ruby: "2.0"
+            graphql-ruby: "2.1"
           - ruby: "3.1"
             graphql-ruby: "2.0"
           - ruby: "3.0"
@@ -26,26 +28,15 @@ jobs:
             graphql-ruby: "1.12"
           - ruby: "2.6"
             graphql-ruby: "1.11"
-    container:
-      image: ruby:${{ matrix.ruby }}
-      env:
-        CI: true
-        BUNDLE_GEMFILE: gemfiles/graphql_${{ matrix.graphql-ruby }}.gemfile
+          - ruby: "2.5"
+            graphql-ruby: "1.10"
+    env:
+      BUNDLE_GEMFILE: gemfiles/graphql_${{ matrix.graphql-ruby }}.gemfile
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: bundle-${{ matrix.ruby }}-${{ matrix.graphql-ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            bundle-${{ matrix.ruby }}-${{ matrix.graphql-ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-            bundle-${{ matrix.ruby }}-
-      - name: Upgrade Bundler to 2.x (for older Rubies)
-        run: gem install bundler -v '~> 2.0'
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install
-          bundle update
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
