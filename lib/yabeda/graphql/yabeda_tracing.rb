@@ -6,18 +6,13 @@ module Yabeda
       def execute_field(field:, query:, ast_node:, arguments:, object:, &block)
         start = ::Process.clock_gettime ::Process::CLOCK_MONOTONIC
         result = block.call
+
         duration = ::Process.clock_gettime(::Process::CLOCK_MONOTONIC) - start
 
         tags = extract_field_tags(field)
+        path = query.context.current_path
 
-        # Create a unique path for each field execution to ensure proper counting
-        path = [field.owner.graphql_name, field.graphql_name, object.object_id.to_s]
-
-        # Check if this is a root field by looking at the parent type
-        parent_type = field.owner
-        is_root_field = [query.schema.query, query.schema.mutation, query.schema.subscription].include?(parent_type)
-
-        if is_root_field
+        if path.length == 1
           return result if query.schema.lazy?(result)
 
           if query.query?
