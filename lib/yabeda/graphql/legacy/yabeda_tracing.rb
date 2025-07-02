@@ -1,5 +1,3 @@
-return if Gem::Version.new(::GraphQL::VERSION) >= Gem::Version.new( "2.2.0")
-
 require "graphql/tracing/platform_tracing"
 
 module Yabeda

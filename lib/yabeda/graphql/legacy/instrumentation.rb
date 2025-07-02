@@ -1,5 +1,3 @@
-return if Gem::Version.new(::GraphQL::VERSION) >= Gem::Version.new( "2.2.0")
-
 module Yabeda
   module GraphQL
     module Legacy

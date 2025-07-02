@@ -1,10 +1,14 @@
 require "graphql/version"
+
 require "yabeda"
 require "yabeda/graphql/version"
 require "yabeda/graphql/yabeda_tracing"
 require "yabeda/graphql/instrumentation"
-require "yabeda/graphql/legacy/yabeda_tracing"
-require "yabeda/graphql/legacy/instrumentation"
+
+if Gem::Version.new(::GraphQL::VERSION) < Gem::Version.new("2.2.0")
+  require "yabeda/graphql/legacy/yabeda_tracing"
+  require "yabeda/graphql/legacy/instrumentation"
+end
 
 module Yabeda
   module GraphQL
