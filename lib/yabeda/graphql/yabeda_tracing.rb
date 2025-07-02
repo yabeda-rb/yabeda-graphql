@@ -1,4 +1,4 @@
-require "graphql/tracing/platform_tracing"
+#require "graphql/tracing/platform_tracing"
 
 module Yabeda
   module GraphQL

@@ -1,8 +1,10 @@
+require "graphql/version"
 require "yabeda"
 require "yabeda/graphql/version"
 require "yabeda/graphql/yabeda_tracing"
-require "yabeda/graphql/depreacated_yabeda_tracing"
 require "yabeda/graphql/instrumentation"
+require "yabeda/graphql/legacy/yabeda_tracing"
+require "yabeda/graphql/legacy/instrumentation"
 
 module Yabeda
   module GraphQL
@@ -31,12 +33,12 @@ module Yabeda
     end
 
     def self.use(schema)
-      schema.instrument(:query, Instrumentation.new)
-
-      if Gem::Version.new(::GraphQL::VERSION) >= Gem::Version.new( "2.3.0")
-        schema.trace_with YabedaTracing
+      if Gem::Version.new(::GraphQL::VERSION) >= Gem::Version.new( "2.2.0")
+        schema.trace_with Yabeda::GraphQL::Instrumentation
+        schema.trace_with Yabeda::GraphQL::YabedaTracing
       else
-        schema.use DeprecatedYabedaTracing, trace_scalars: true
+        schema.instrument :query, Legacy::Instrumentation.new
+        schema.use Legacy::YabedaTracing, trace_scalars: true
       end
     end
   end
