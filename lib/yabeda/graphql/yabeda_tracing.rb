@@ -1,12 +1,9 @@
-#require "graphql/tracing/platform_tracing"
-
 module Yabeda
   module GraphQL
     module YabedaTracing
       def execute_field(field:, query:, ast_node:, arguments:, object:, &block)
         start = ::Process.clock_gettime ::Process::CLOCK_MONOTONIC
         result = block.call
-
         duration = ::Process.clock_gettime(::Process::CLOCK_MONOTONIC) - start
 
         tags = extract_field_tags(field)
@@ -31,14 +28,6 @@ module Yabeda
 
       def execute_field_lazy(field:, query:, ast_node:, arguments:, object:, &block)
         execute_field(field: field, query: query, ast_node: ast_node, arguments: arguments, object: object, &block)
-      end
-
-      def extract_field_trace_data(data)
-        if data[:context] # Legacy non-interpreter mode
-          [data[:context].field, data[:context].path, data[:context].query]
-        else # Interpreter mode
-          data.values_at(:field, :path, :query)
-        end
       end
 
       def extract_field_tags(field)
@@ -69,19 +58,6 @@ module Yabeda
         query.context.namespace(Yabeda::GraphQL)[:field_call_cache]
       end
 
-      def platform_field_key(type, field)
-        "#{type.graphql_name}.#{field.graphql_name}"
-      end
-
-      # We don't use these yet, but graphql-ruby require us to declare them
-
-      def platform_authorized_key(type)
-        "#{type.graphql_name}.authorized"
-      end
-
-      def platform_resolve_type_key(type)
-        "#{type.graphql_name}.resolve_type"
-      end
     end
   end
 end
