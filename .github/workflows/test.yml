@@ -18,24 +18,12 @@ jobs:
         include:
           - ruby: "3.4"
             graphql-ruby: "2.5"
-          - ruby: "3.4"
+          - ruby: "3.3"
             graphql-ruby: "2.4"
-          - ruby: "3.3"
-            graphql-ruby: "2.3"
-          - ruby: "3.3"
-            graphql-ruby: "2.2"
           - ruby: "3.2"
-            graphql-ruby: "2.1"
+            graphql-ruby: "2.3"
           - ruby: "3.1"
-            graphql-ruby: "2.0"
-          - ruby: "3.0"
-            graphql-ruby: "1.13"
-          - ruby: "2.7"
-            graphql-ruby: "1.12"
-          - ruby: "2.6"
-            graphql-ruby: "1.11"
-          - ruby: "2.5"
-            graphql-ruby: "1.10"
+            graphql-ruby: "2.2"
     env:
       BUNDLE_GEMFILE: gemfiles/graphql_${{ matrix.graphql-ruby }}.gemfile
     steps:
