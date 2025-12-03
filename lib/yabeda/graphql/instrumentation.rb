@@ -1,15 +1,17 @@
 module Yabeda
   module GraphQL
-    class Instrumentation
-      def before_query(query)
-        reset_cache!(query)
-      end
-
-      def after_query(query)
-        cache(query).each do |_path, options|
-          Yabeda.graphql.field_resolve_runtime.measure(options[:tags], options[:duration])
-          Yabeda.graphql.fields_request_count.increment(options[:tags])
+    module Instrumentation
+      def execute_multiplex(multiplex:)
+        queries = multiplex.queries
+        queries.each { |query| reset_cache!(query) }
+        result = super
+        queries.each do |query|
+          cache(query).each do |_path, options|
+            Yabeda.graphql.field_resolve_runtime.measure(options[:tags], options[:duration])
+            Yabeda.graphql.fields_request_count.increment(options[:tags])
+          end
         end
+        result
       end
 
       private

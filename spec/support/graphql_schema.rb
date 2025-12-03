@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require "graphql"
 require "graphql/batch"
+require "ostruct"
 
 class PriceLoader < GraphQL::Batch::Loader
   def perform(ids)

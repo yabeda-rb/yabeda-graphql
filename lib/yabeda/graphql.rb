@@ -30,8 +30,8 @@ module Yabeda
     end
 
     def self.use(schema)
-      schema.instrument(:query, Instrumentation.new)
-      schema.use YabedaTracing, trace_scalars: true
+      schema.trace_with Yabeda::GraphQL::Instrumentation
+      schema.trace_with Yabeda::GraphQL::YabedaTracing
     end
   end
 end
