@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.3.0 - 2025-12-03
+
+### Changed
+
+ - Switch to [current GraphQL-Ruby Tracing API](https://graphql-ruby.org/queries/tracing) (`GraphQL::Schema.trace_with`) API. [#9](https://github.com/yabeda-rb/yabeda-graphql/pull/9) by [@loadkpi]
+
+### Removed
+
+ - Support for GraphQL-Ruby versions older than 2.2. [@Envek]
+
 ## 0.2.3 - 2023-05-29
 
 ### Fixed
@@ -36,3 +46,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [@Envek]: https://github.com/Envek "Andrey Novikov"
 [@skateman]: https://github.com/skateman "Halász Dávid"
+[@loadkpi]: https://github.com/loadkpi "Pavel Kozlov"
